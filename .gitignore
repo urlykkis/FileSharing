@@ -1,0 +1,6 @@
+.idea
+**/__pycache__/
+__pycache__/
+app/data/config.py
+тз.txt
+venv/
