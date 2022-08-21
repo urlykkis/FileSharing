@@ -1,6 +1,6 @@
 # File Sharing
 
-<b>Stack: FastAPI, AsyncPG (PostgreSQL)</b>
+<b>Stack: FastAPI, AsyncPG (PostgreSQL), Docker</b>
 
 
 ## Settings
