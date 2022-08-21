@@ -19,11 +19,16 @@ symbols = list(ascii_letters)
 
 @router.put("/upload", name='Загрузка файла', status_code=201,
             description="Загрузка файла пользователем",
-            response_description="Вовзращает идентификатор файла")
+            response_description="Вовзращает идентификатор файла",
+            response_model=ResponseSchemas.FileCreated)
 async def upload_handler(files: list[UploadFile] = File(...), data: str = file_data,
                          user: User = Depends(JWTBearer())) -> HTTPException | ResponseSchemas.FileCreated:
     fid: str = "".join(choice(symbols) for _ in range(0, 11))
-    auto_destroy: int = loads(data)["auto_destroy"]
+    try:
+        data: dict = loads(data)
+        auto_destroy: int = data["auto_destroy"]
+    except:
+        return HTTPException(status_code=404, detail="Проверьте аргументы")
 
     folder_path: str = rf"files/{fid}/"
     if os.path.exists(folder_path) is False:

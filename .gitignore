@@ -4,3 +4,5 @@ __pycache__/
 app/data/config.py
 тз.txt
 venv/
+app/files/
+docker-compose.yml

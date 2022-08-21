@@ -15,6 +15,31 @@ JWT_SECRET=
 JWT_ALGORITHM=
 SECRET_KEY=
 ```
+create file docker-compose.yml
+```
+version: "3"
+services:
+
+  database:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+      - PORT=5432
+      - POSTGRES_DB=
+    ports:
+      - "5432:5432"
+  api:
+    depends_on:
+      - database
+    stdin_open: true
+    restart: always
+    build: ./
+    command: uvicorn app:app --host 0.0.0.0 --reload
+    ports:
+      - "8000:8000"
+```
 
 ## Install
 ```
@@ -32,9 +57,8 @@ print(secrets.token_urlsafe(30))
 ```
 
 ## Run
-```angular2html
-cd app
-uvicorn app:app --reload
+```
+docker-compose up
 ```
 
 ## Methods
