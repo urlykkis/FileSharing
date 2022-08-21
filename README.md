@@ -6,7 +6,7 @@
 ## Settings
 create file app/data/config.py
 ```
-DB_HOST=
+DB_HOST=docker.for.mac.host.internal
 DB_PORT=
 DB_USER=
 DB_PASSWORD=
@@ -17,12 +17,12 @@ SECRET_KEY=
 ```
 change docker-compose.yml
 
-## Install
+## Standart Settings
 ```
-python3 -m venv venv
-. venv/bin/activate
-
-pip install -r requirements.txt
+DB_PORT=5432
+DB_USER=postgres
+DB_BASE=filesharing
+JWT_ALGORITHM=HS256
 ```
 
 ## Generate Secret Key
@@ -32,7 +32,7 @@ import secrets
 print(secrets.token_urlsafe(30))
 ```
 
-## Run
+## Install & Run
 ```
 docker-compose up
 ```
