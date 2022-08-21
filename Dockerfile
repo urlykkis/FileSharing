@@ -9,5 +9,3 @@ RUN pip3 install -r requirements.txt
 WORKDIR /src/
 
 EXPOSE 8000
-
-CMD uvicorn app:app --reload
