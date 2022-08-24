@@ -1,5 +1,6 @@
 from fastapi import Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from asyncpg import Record
 
 from .functions import decode_jwt
 from data.responses import Response
@@ -21,15 +22,15 @@ class JWTBearer(HTTPBearer):
             if not user:
                 raise Response.invalid_user_token
 
-            user = await select_user_by_id(user["user_id"])
+            user: Record = await select_user_by_id(user["user_id"])
             return User(**user[0])
         else:
             raise Response.invalid_code_authorization
 
     def verify_jwt(self, jwt_token: str) -> dict | None:
         try:
-            payload = decode_jwt(jwt_token)
+            payload: dict = decode_jwt(jwt_token)
             return payload
         except:
-            payload = None
+            payload: None = None
             return payload

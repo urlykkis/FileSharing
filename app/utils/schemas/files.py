@@ -1,11 +1,22 @@
-from fastapi import UploadFile, File, Form
-from pydantic import BaseModel, validator, validate_email
-from datetime import datetime, date
+from fastapi import Form
+from pydantic import BaseModel
+from datetime import datetime
 
-from data.responses import Response
-
-file_data: Form = Form(default={"auto_destroy": 0})
+file_data: Form = Form(default={"auto_destroy": 0, "password": None, "access": True})
 
 
-class NewFile(BaseModel):
-    auto_destroy: int = 0
+class FileBase(BaseModel):
+    fid: str
+    filename: str
+    date_uploaded: str | datetime
+    uid: int
+    downloads: int
+    filesize: int
+    qr_code: str
+    auto_destroy: int
+    password: str | None
+    access: bool
+
+
+class UpdateFile(BaseModel):
+    fid: str

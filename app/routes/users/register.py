@@ -16,7 +16,7 @@ from utils.functions import hash_password, get_random_string, sign_jwt
             response_model=ResponseSchemas.AuthenticatedUser)
 async def register_handler(user: RegisterUser, request: Request) -> \
         str | JSONResponse | ResponseSchemas.AuthenticatedUser:
-    response: str | bool = await validate_register_user(user, request.client.host)
+    response: str | bool = await validate_register_user(user)
 
     if response is True:
         salt: str = get_random_string()

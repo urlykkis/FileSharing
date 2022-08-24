@@ -39,7 +39,9 @@ class Database:
             downloads smallint DEFAULT 0,
             filesize integer,
             qr_code TEXT,
-            auto_destroy integer DEFAULT 0
+            auto_destroy integer DEFAULT 0,
+            password char(30) DEFAULT NULL,
+            access BOOLEAN DEFAULT TRUE
         )""")
 
 

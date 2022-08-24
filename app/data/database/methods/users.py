@@ -42,3 +42,7 @@ async def update_user_recent_entries(uid: int, entries: dict) -> None:
     recent_entries.update(entries)
     recent_entries = dumps(recent_entries)
     await db.con.execute("UPDATE users SET recent_entries = $1 WHERE uid = $2", recent_entries, uid)
+
+
+async def update_user_total_files(uid: int) -> None:
+    await db.con.execute("UPDATE users SET total_files = total_files + 1 WHERE uid = $1", uid)

@@ -20,7 +20,9 @@ async def auth_handler(request: Request, user: AuthenticateUser) -> \
     if db_user:
         if validate_password(user.password, db_user[0]["password"].strip()):
             token: str = await sign_jwt(db_user[0]["uid"])
-            platform: str | None = request.headers["sec-ch-ua-platform"] if request.headers.get("sec-ch-ua-platform") else None
+            platform: str | None = request.headers["sec-ch-ua-platform"] \
+                if request.headers.get("sec-ch-ua-platform") else None
+
             new_entry: dict = {
                 request.client.host: {
                     "time:": datetime.now().strftime("%d.%m.%Y %H:%M:%S"),

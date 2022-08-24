@@ -1,6 +1,5 @@
 from fastapi import HTTPException
 from fastapi import status
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from data.exceptions import ValidateEmailError
@@ -13,12 +12,24 @@ class ResponseSchemas:
         uid: int
         token: str
 
-    class FileCreated(BaseModel):
+    class FileEdited(BaseModel):
         fid: str
 
     class FileFound(BaseModel):
         file_id: str
         files: list[dict]
+
+    class UserInfo(BaseModel):
+        uid: int
+        username: str
+        email: str | None
+        reg_date: str
+        status: bool
+        recent_entries: dict | str | None
+        total_files: int | str
+
+    class UserFiles(BaseModel):
+        files: dict
 
 
 class Response:
@@ -91,6 +102,27 @@ class Response:
         detail="Файл не найден"
     )
 
+    wrong_file_password: HTTPException = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Неправильный пароль"
+    )
+
+    user_files_not_found: HTTPException = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Файлы не найдены"
+    )
+
+    file_not_found: HTTPException = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Файл не найден"
+    )
+
+    file_delete_not_allowed: HTTPException = HTTPException(
+        status_code=status.HTTP_406_NOT_ACCEPTABLE,
+        detail="Вы не можете удалить этот файл"
+    )
+
+
     @staticmethod
     def file_found(data: dict):
         return ResponseSchemas.FileFound(**data)
@@ -104,5 +136,21 @@ class Response:
         return ResponseSchemas.AuthenticatedUser(**{"uid": uid, "token": token})
 
     @staticmethod
-    def file_created(fid: str) -> ResponseSchemas.FileCreated:
-        return ResponseSchemas.FileCreated(**{"fid": fid})
+    def file_created(fid: str) -> ResponseSchemas.FileEdited:
+        return ResponseSchemas.FileEdited(**{"fid": fid})
+
+    @staticmethod
+    def user_info(user_info: dict) -> ResponseSchemas.UserInfo:
+        return ResponseSchemas.UserInfo(**user_info)
+
+    @staticmethod
+    def user_files(user_files: dict) -> ResponseSchemas.UserFiles:
+        return ResponseSchemas.UserFiles(**user_files)
+
+    @staticmethod
+    def file_deleted(fid: str) -> ResponseSchemas.FileEdited:
+        return ResponseSchemas.FileEdited(**{"fid": fid})
+
+    @staticmethod
+    def file_status_updated(fid: str) -> ResponseSchemas.FileEdited:
+        return ResponseSchemas.FileEdited(**{"fid": fid})

@@ -6,3 +6,4 @@ app/data/config.py
 venv/
 app/files/
 docker-compose.yml
+app/data/logs/logs.txt

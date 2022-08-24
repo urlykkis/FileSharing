@@ -6,23 +6,26 @@
 ## Settings
 create file app/data/config.py
 ```
-DB_HOST=docker.for.mac.host.internal
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
-DB_BASE=
-JWT_SECRET=
-JWT_ALGORITHM=
-SECRET_KEY=
+DB_HOST = ""
+DB_PORT = 
+DB_USER = ""
+DB_PASSWORD = ""
+DB_BASE = ""
+JWT_SECRET = ""
+JWT_ALGORITHM = ""
+SECRET_KEY = ""
+LOGS_PATH = ""
 ```
 change docker-compose.yml
 
 ## Standart Settings
 ```
-DB_PORT=5432
-DB_USER=postgres
-DB_BASE=filesharing
-JWT_ALGORITHM=HS256
+DB_HOST = "docker.for.mac.host.internal"
+DB_PORT = 5432
+DB_USER = "postgres"
+DB_BASE = "filesharing"
+JWT_ALGORITHM = "HS256"
+LOGS_PATH = "./data/logs/logs.txt"
 ```
 
 ## Generate Secret Key

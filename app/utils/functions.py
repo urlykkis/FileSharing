@@ -3,12 +3,10 @@ import string
 import hashlib
 import time
 import jwt
-import aiofiles
-import os
 import shutil
 
 from asyncpg import Record
-from fastapi import Request
+from fastapi import Request, UploadFile
 
 from data.config import JWT_SECRET, JWT_ALGORITHM
 
@@ -45,19 +43,19 @@ def decode_jwt(token: str) -> dict:
         return {}
 
 
-async def save_file(path: str, file: any) -> None:
+async def save_file(path: str, file: UploadFile) -> None:
     with open(path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
 
 async def generate_data_files(request: Request, file_id: str, db_files: Record) -> dict:
-    data = {
+    data: dict = {
         "file_id": file_id,
         "files": [],
     }
 
     for file in db_files:
-        file_data = {
+        file_data: dict = {
             "file_name": file[1].strip(),
             "date_uploaded": file[2].strftime("%d.%m.%Y %H:%M:%S"),
             "uid": file[3],
