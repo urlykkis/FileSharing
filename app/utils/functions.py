@@ -15,7 +15,7 @@ def get_random_string(length: int = 12) -> str:
     return "".join(random.choice(string.ascii_letters) for _ in range(length))
 
 
-def hash_password(password: str, salt: str = None):
+def hash_password(password: str, salt: str = None) -> str:
     if salt is None:
         salt: str = get_random_string()
     enc: bytes = hashlib.pbkdf2_hmac("sha256", password.encode(), salt.encode(), 100_000)

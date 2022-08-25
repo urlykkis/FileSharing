@@ -3,11 +3,12 @@ from asyncpg import Record
 
 from .loader import router
 
+from data.responses import Response, ResponseSchemas
+from data.database.methods.files import get_file_uid, update_file_access
 from utils.schemas.users import User
 from utils.schemas.files import UpdateFile
 from utils.dependencies import JWTBearer
-from data.responses import Response, ResponseSchemas
-from data.database.methods.files import get_file_uid, update_file_access
+from utils.validate import validate_user_file
 
 
 @router.post("/update_file_access", status_code=200,
@@ -17,11 +18,10 @@ from data.database.methods.files import get_file_uid, update_file_access
 async def update_file_access_handler(file: UpdateFile, user: User = Depends(JWTBearer())) \
         -> ResponseSchemas.FileEdited | HTTPException:
     db_file: Record = await get_file_uid(file.fid)
-    if db_file:
-        if db_file[0]["uid"] == user.uid:
-            await update_file_access(file.fid)
-            return Response.file_status_updated(file.fid)
-        else:
-            return Response.file_delete_not_allowed
+    validate_response: bool | HTTPException = await validate_user_file(db_file, user.uid)
+    if isinstance(validate_response, bool):
+        await update_file_access(file.fid)
+        return Response.file_status_updated(file.fid)
     else:
-        return Response.file_not_found
+        return validate_response
+
